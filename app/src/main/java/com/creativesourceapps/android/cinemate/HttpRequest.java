@@ -45,6 +45,7 @@ public class HttpRequest extends AsyncTask<String, Void, String> {
             streamReader.close();
             //Set our result equal to our stringBuilder
             result = stringBuilder.toString();
+
         }
         catch(IOException e){
             e.printStackTrace();

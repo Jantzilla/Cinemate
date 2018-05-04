@@ -1,11 +1,13 @@
 package com.creativesourceapps.android.cinemate;
 
+import com.squareup.picasso.RequestCreator;
+
 public class Movie {
     String versionName;
     String versionNumber;
-    int image; // drawable reference id
+    RequestCreator image; // drawable reference id
 
-    public Movie(String vName, String vNumber, int image)
+    public Movie(String vName, String vNumber, RequestCreator image)
     {
         this.versionName = vName;
         this.versionNumber = vNumber;

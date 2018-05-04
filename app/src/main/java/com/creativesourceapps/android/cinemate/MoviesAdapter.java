@@ -51,7 +51,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         }
 
         ImageView iconView = (ImageView) convertView.findViewById(R.id.grid_item_icon);
-        iconView.setImageResource(movies.image);
+        movies.image.into(iconView);
 
         return convertView;
     }

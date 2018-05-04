@@ -10,6 +10,13 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
@@ -17,19 +24,6 @@ import java.util.concurrent.ExecutionException;
 public class MainActivityFragment extends Fragment {
 
     private MoviesAdapter moviesAdapter;
-
-    Movie[] movies = {
-            new Movie("Cupcake", "1.5", R.drawable.ic_launcher_foreground),
-            new Movie("Donut", "1.6", R.drawable.ic_launcher_foreground),
-            new Movie("Eclair", "2.0-2.1", R.drawable.ic_launcher_foreground),
-            new Movie("Froyo", "2.2-2.2.3", R.drawable.ic_launcher_foreground),
-            new Movie("GingerBread", "2.3-2.3.7", R.drawable.ic_launcher_foreground),
-            new Movie("Honeycomb", "3.0-3.2.6", R.drawable.ic_launcher_foreground),
-            new Movie("Ice Cream Sandwich", "4.0-4.0.4", R.drawable.ic_launcher_foreground),
-            new Movie("Jelly Bean", "4.1-4.3.1", R.drawable.ic_launcher_foreground),
-            new Movie("KitKat", "4.4-4.4.4", R.drawable.ic_launcher_foreground),
-            new Movie("Lollipop", "5.0-5.1.1", R.drawable.ic_launcher_foreground)
-    };
 
     public MainActivityFragment() {
     }
@@ -39,16 +33,12 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        moviesAdapter = new MoviesAdapter(getActivity(), Arrays.asList(movies));
-
-        // Get a reference to the GridView, and attach this adapter to it.
-        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
-        gridView.setAdapter(moviesAdapter);
+        final ArrayList<Movie> movies = new ArrayList<Movie>();
 
 
         String moviesApiKey = "6e520b25b87418f51e3f5d6be319d4ae";
 
-                //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
+        //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
         //Movies API endpoint
         String myUrl = "https://api.themoviedb.org/3/movie/popular?api_key="+moviesApiKey;
@@ -59,11 +49,31 @@ public class MainActivityFragment extends Fragment {
 
         try {
             response = getRequest.execute(myUrl).get();
+
+            JSONObject json = new JSONObject(response);
+            JSONArray items = json.getJSONArray("results");
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject resultObject = items.getJSONObject(i);
+                Movie movie = new Movie(resultObject.getString("title"),
+                        resultObject.getString("overview"),
+                        Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/"+resultObject.getString("poster_path")));
+                movies.add(movie);
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        moviesAdapter = new MoviesAdapter(getActivity(), movies);
+
+        // Get a reference to the GridView, and attach this adapter to it.
+        GridView gridView = (GridView) rootView.findViewById(R.id.gridview_movie);
+        gridView.setAdapter(moviesAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -71,9 +81,9 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                String item_clicked = parent.getItemAtPosition(position).toString();
+                Movie item_clicked = movies.get(position);
 
-                Toast.makeText(getContext(), item_clicked, Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), item_clicked.versionName, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 startActivity(intent);
 
