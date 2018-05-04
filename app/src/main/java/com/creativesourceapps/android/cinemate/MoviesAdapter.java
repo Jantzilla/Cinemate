@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
         }
 
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.list_item_icon);
+        ImageView iconView = (ImageView) convertView.findViewById(R.id.grid_item_icon);
         iconView.setImageResource(movies.image);
 
         return convertView;
