@@ -2,6 +2,7 @@ package com.creativesourceapps.android.cinemate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ public class MainActivityFragment extends Fragment {
                 JSONObject resultObject = items.getJSONObject(i);
                 Movie movie = new Movie(resultObject.getString("title"),
                         resultObject.getString("overview"),
+                        resultObject.getInt("id"),
                         Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/"+resultObject.getString("poster_path")));
                 movies.add(movie);
             }
@@ -85,6 +87,7 @@ public class MainActivityFragment extends Fragment {
 
                 Toast.makeText(getContext(), item_clicked.versionName, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra("parcel_data", (Parcelable) item_clicked);
                 startActivity(intent);
 
             }
