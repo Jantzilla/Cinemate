@@ -1,8 +1,4 @@
 <resources>
     <string name="app_name">Cinemate</string>
     <string name="sort_by">Sort By</string>
-    <string-array name="spinner_list_item_array">
-        <item>Popular</item>
-        <item>Top Rated</item>
-    </string-array>
 </resources>

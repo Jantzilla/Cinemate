@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class MoviesAdapter extends ArrayAdapter<Movie> {
@@ -51,7 +53,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
         }
 
         ImageView iconView = (ImageView) convertView.findViewById(R.id.grid_item_icon);
-        movies.image.into(iconView);
+        Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/"+movies.poster).into(iconView);
 
         return convertView;
     }

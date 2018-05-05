@@ -6,35 +6,30 @@ import android.os.Parcelable;
 import com.squareup.picasso.RequestCreator;
 
 public class Movie implements Parcelable {
-    String versionName;
-    String versionNumber;
     int id;
-    RequestCreator image;
+    String voteAverage;
+    String title;
+    String poster;
+    String overview;
+    String releaseDate;
 
-    public Movie(String vName, String vNumber, int id, RequestCreator image)
+    public Movie(int id, String voteAverage, String title, String poster, String overview, String releaseDate)
     {
-        this.versionName = vName;
-        this.versionNumber = vNumber;
         this.id = id;
-        this.image = image;
+        this.voteAverage = voteAverage;
+        this.title = title;
+        this.poster = poster;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
     }
 
     protected Movie(Parcel in) {
-        versionName = in.readString();
-        versionNumber = in.readString();
         id = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(versionName);
-        dest.writeString(versionNumber);
-        dest.writeInt(id);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
+        voteAverage = in.readString();
+        title = in.readString();
+        poster = in.readString();
+        overview = in.readString();
+        releaseDate = in.readString();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -48,4 +43,19 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(voteAverage);
+        parcel.writeString(title);
+        parcel.writeString(poster);
+        parcel.writeString(overview);
+        parcel.writeString(releaseDate);
+    }
 }
