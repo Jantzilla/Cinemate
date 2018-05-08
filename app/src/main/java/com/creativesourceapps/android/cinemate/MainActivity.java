@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
-                        final String MOVIES_API_KEY = "YOUR API GOES HERE";
+                        final String MOVIES_API_KEY = "";
 
                                 //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 

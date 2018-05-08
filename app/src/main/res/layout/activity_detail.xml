@@ -25,20 +25,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingStart="15dp"
+        android:paddingRight="15dp"
+        android:paddingEnd="15dp">
     <ImageView
         android:id="@+id/imageView"
-        android:layout_margin="15dp"
-        android:layout_width="200dp"
-        android:layout_height="250dp"
+        android:layout_width="175dp"
+        android:layout_height="200dp"
         app:srcCompat="@android:drawable/ic_menu_report_image" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_marginRight="15dp"
-            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_gravity="center_horizontal"
             android:orientation="vertical">
     <TextView
         android:id="@+id/textView2"
@@ -54,19 +58,82 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:padding="35dp"
+        android:padding="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/btn_star_big_off" />
+
         </LinearLayout>
     </LinearLayout>
+        <TextView
+            android:id="@+id/tv_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:textSize="18sp"
+            android:text="Summary" />
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
         android:gravity="center"
         android:text="TextView" />
+        <TextView
+            android:id="@+id/tv_trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:textSize="18sp"
+            android:text="Trailers" />
+        <ListView
+            android:id="@+id/lv_trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="50dp"
+                android:src="@android:drawable/ic_media_play"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Trailer 1"/>w
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            android:textSize="18sp"
+            android:text="Reviews" />
+        <ListView
+            android:id="@+id/lv_trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Great Movie"/>
+        </LinearLayout>
     </LinearLayout>
     </ScrollView>
 </LinearLayout>
