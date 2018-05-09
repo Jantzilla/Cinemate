@@ -146,23 +146,25 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         SharedPreferences sharedpreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedpreferences.edit();
+        GridView gridView = findViewById(R.id.gridview_movie);
 
         switch (item.getItemId()) {
             case R.id.popular:
                 editor.putString("SortBy", "popular");
-                editor.commit();
+                editor.apply();
                 requestMovieData();
                 break;
 
             case R.id.top_rated:
                 editor.putString("SortBy", "top_rated");
-                editor.commit();
+                editor.apply();
                 requestMovieData();
                 break;
 
             case R.id.favorites:
                 editor.putString("SortBy", "favorites");
-                editor.commit();
+                editor.apply();
+                gridView.setOnItemClickListener(null);
                 requestMovieData();
                 break;
         }
