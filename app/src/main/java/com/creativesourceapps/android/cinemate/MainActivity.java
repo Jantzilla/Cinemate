@@ -6,11 +6,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +24,14 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public MoviesAdapter requestMovieData() {
+    private void requestMovieData() {
         String response;
         SharedPreferences sharedpreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
 
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
-                        final String MOVIES_API_KEY = "6e520b25b87418f51e3f5d6be319d4ae";
+                        final String MOVIES_API_KEY = "";
 
                                 //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
@@ -66,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }while(cursor.moveToNext());
             }
+            cursor.close();
 
         } else {
 
@@ -121,14 +119,12 @@ public class MainActivity extends AppCompatActivity {
                     Movie item_clicked = movies.get(position);
 
                     Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                    intent.putExtra("parcel_data", (Parcelable) item_clicked);
+                    intent.putExtra("parcel_data", item_clicked);
                     startActivity(intent);
 
                 }
             });
         }
-
-        return moviesAdapter;
 
     }
 

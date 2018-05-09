@@ -11,8 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MoviesAdapter extends ArrayAdapter<Movie> {
-    private static final String LOG_TAG = MoviesAdapter.class.getSimpleName();
+class MoviesAdapter extends ArrayAdapter<Movie> {
 
     /**
      * This is our own custom constructor (it doesn't mirror a superclass constructor).
@@ -52,7 +51,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_movie, parent, false);
         }
 
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.grid_item_icon);
+        ImageView iconView = convertView.findViewById(R.id.grid_item_icon);
         Picasso.with(getContext()).load("http://image.tmdb.org/t/p/w185/"+movies.poster).into(iconView);
 
         return convertView;

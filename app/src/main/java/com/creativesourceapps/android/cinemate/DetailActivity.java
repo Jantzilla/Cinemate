@@ -7,13 +7,11 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,21 +29,21 @@ import java.util.concurrent.ExecutionException;
 
 public class DetailActivity extends AppCompatActivity {
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public ArrayAdapter requestMovieData(String movieId, String endpoint) {
+    private void requestMovieData(String movieId, String endpoint) {
         String response;
 
-        //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
+                                //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
-        final String MOVIES_API_KEY = "6e520b25b87418f51e3f5d6be319d4ae";
+                        final String MOVIES_API_KEY = "";
 
-        //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
+                                //**\\**//**\\YOUR API KEY GOES HERE//**\\**//**\\
 
 
 
@@ -70,7 +68,7 @@ public class DetailActivity extends AppCompatActivity {
                     JSONObject resultObject = items.getJSONObject(i);
                     if(endpoint.equals("videos")) {
                         listItem.add(resultObject.getString("key"));
-                        clipNum.add(String.valueOf(i+1));
+                        clipNum.add(" " + String.valueOf(i+1));
                     } else {
                         listItem.add(resultObject.getString("content"));
                     }
@@ -90,10 +88,8 @@ public class DetailActivity extends AppCompatActivity {
             Toast.makeText(this,"No Network Connection. Please reconnect and reload page.", Toast.LENGTH_LONG).show();
         }
 
-        //MoviesAdapter moviesAdapter = new MoviesAdapter(this, listItem);
-
         if(endpoint.equals("videos")) {
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.trailer_list_item, R.id.tv_trailer_number, clipNum);
+            ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.trailer_list_item, R.id.tv_trailer_number, clipNum);
 
             ListView listView = findViewById(R.id.lv_trailers);
             listView.setAdapter(adapter);
@@ -114,15 +110,12 @@ public class DetailActivity extends AppCompatActivity {
                 }
             });
 
-            return adapter;
-
         } else {
-            ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.review_list_item,R.id.tv_review_item, listItem);
+            ArrayAdapter adapter = new ArrayAdapter<>(this, R.layout.review_list_item, R.id.tv_review_item, listItem);
 
             ListView listView = findViewById(R.id.lv_reviews);
             listView.setAdapter(adapter);
 
-            return adapter;
         }
 
     }
@@ -164,7 +157,7 @@ public class DetailActivity extends AppCompatActivity {
                 if(sharedpreferences.getString("Favorite"+movie.id,"false").equals("true")) {
                     imageView2.setImageResource(android.R.drawable.btn_star_big_off);
                     editor.putString("Favorite"+movie.id, "false");
-                    editor.commit();
+                    editor.apply();
 
                     getContentResolver().delete(FavoritesContract.FAVORITE_URI, String.valueOf(movie.id), null);
 
@@ -172,7 +165,7 @@ public class DetailActivity extends AppCompatActivity {
                 else {
                     imageView2.setImageResource(android.R.drawable.btn_star_big_on);
                     editor.putString("Favorite"+movie.id, "true");
-                    editor.commit();
+                    editor.apply();
 
                     values.put(FavoritesContract.COLUMN_MOVIE_NAME, movie.title.trim());
                     values.put(FavoritesContract.COLUMN_MOVIE_ID, movie.id);
@@ -180,10 +173,6 @@ public class DetailActivity extends AppCompatActivity {
 
                     //ContentResolver will access the Employee Content Provider
                     Uri newUri = getContentResolver().insert(FavoritesContract.FAVORITE_URI, values);
-
-                    String newUserId = newUri.getLastPathSegment();
-
-                    Toast.makeText(getApplicationContext(),"Successfully saved. New User ID is " + newUserId, Toast.LENGTH_LONG).show();
 
                 }
             }

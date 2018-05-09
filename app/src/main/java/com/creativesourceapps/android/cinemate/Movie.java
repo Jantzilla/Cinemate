@@ -3,15 +3,13 @@ package com.creativesourceapps.android.cinemate;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.squareup.picasso.RequestCreator;
-
 public class Movie implements Parcelable {
-    int id;
-    String voteAverage;
-    String title;
-    String poster;
-    String overview;
-    String releaseDate;
+    final int id;
+    final String voteAverage;
+    final String title;
+    final String poster;
+    final String overview;
+    final String releaseDate;
 
     public Movie(int id, String voteAverage, String title, String poster, String overview, String releaseDate)
     {
@@ -23,7 +21,7 @@ public class Movie implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         id = in.readInt();
         voteAverage = in.readString();
         title = in.readString();

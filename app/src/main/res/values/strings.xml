@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Cinemate</string>
     <string name="sort_by">Sort By</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="favorites">Favorites</string>
+    <string name="no_image_available">No Image Available</string>
+    <string name="favorite_button">Favorite Button</string>
+    <string name="trailers">Trailers</string>
+    <string name="reviews">Reviews</string>
+    <string name="trailer_and_space">Trailer</string>
+    <string name="play">Play</string>
+    <string name="summary">Summary</string>
 </resources>

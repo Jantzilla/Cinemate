@@ -10,6 +10,7 @@
         android:id="@+id/grid_item_icon"
         android:layout_width="210dp"
         android:layout_height="290dp"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/movie_poster" />
 
 </LinearLayout>
