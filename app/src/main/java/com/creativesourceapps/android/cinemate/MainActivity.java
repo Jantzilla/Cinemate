@@ -3,11 +3,14 @@ package com.creativesourceapps.android.cinemate;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,58 +54,79 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<Movie> movies = new ArrayList<>();
         movies.clear();
 
-        HttpRequest getRequest = new HttpRequest();
+        if(sharedpreferences.getString("SortBy", "popular").equals("favorites")) {
 
-        if(isOnline()) {
-            try {
-                response = getRequest.execute(myUrl).get();
-
-                JSONObject json = new JSONObject(response);
-                JSONArray items = json.getJSONArray("results");
-
-                for (int i = 0; i < items.length(); i++) {
-                    JSONObject resultObject = items.getJSONObject(i);
-                    Movie movie = new Movie(resultObject.getInt("id"),
-                            resultObject.getString("vote_average") + "/10",
-                            resultObject.getString("title"),
-                            resultObject.getString("poster_path"),
-                            resultObject.getString("overview"),
-                            resultObject.getString("release_date"));
+            String[] projection = {"image"};
+            Cursor cursor = getContentResolver().query(FavoritesContract.FAVORITE_URI, projection,null,null,null);
+            if(cursor.moveToFirst()) {
+                do {
+                    Movie movie = new Movie(0,"10/10","movie", cursor.getString(0),
+                            "details","unknown");
                     movies.add(movie);
-                }
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch(NullPointerException e){
-                e.printStackTrace();
-                Toast.makeText(this,"Unable to get movie data. Make sure you have added your \"API KEY\" to MainActivity.java", Toast.LENGTH_LONG).show();
+                }while(cursor.moveToNext());
             }
+
         } else {
-            Toast.makeText(this,"No Network Connection. Please reconnect and reload page.", Toast.LENGTH_LONG).show();
+
+            HttpRequest getRequest = new HttpRequest();
+
+            if (isOnline()) {
+                try {
+                    response = getRequest.execute(myUrl).get();
+
+                    JSONObject json = new JSONObject(response);
+                    JSONArray items = json.getJSONArray("results");
+
+                    for (int i = 0; i < items.length(); i++) {
+                        JSONObject resultObject = items.getJSONObject(i);
+                        Movie movie = new Movie(resultObject.getInt("id"),
+                                resultObject.getString("vote_average") + "/10",
+                                resultObject.getString("title"),
+                                resultObject.getString("poster_path"),
+                                resultObject.getString("overview"),
+                                resultObject.getString("release_date"));
+                        movies.add(movie);
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Unable to get movie data. Make sure you have added your \"API KEY\" to MainActivity.java", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "No Network Connection. Please reconnect and reload page.", Toast.LENGTH_LONG).show();
+            }
         }
+
 
         MoviesAdapter moviesAdapter = new MoviesAdapter(this, movies);
 
         GridView gridView = findViewById(R.id.gridview_movie);
         gridView.setAdapter(moviesAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+        if(!sharedpreferences.getString("SortBy", "popular").equals("favorites")) {
 
-                Movie item_clicked = movies.get(position);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
-                intent.putExtra("parcel_data", (Parcelable) item_clicked);
-                startActivity(intent);
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
 
-            }
-        });
+                    Movie item_clicked = movies.get(position);
+
+                    Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                    intent.putExtra("parcel_data", (Parcelable) item_clicked);
+                    startActivity(intent);
+
+                }
+            });
+        }
 
         return moviesAdapter;
 
@@ -137,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.favorites:
-                Intent intent = new Intent(getApplicationContext(), FavoritesActivity.class);
-                startActivity(intent);
+                editor.putString("SortBy", "favorites");
+                editor.commit();
+                requestMovieData();
                 break;
         }
         return super.onOptionsItemSelected(item);

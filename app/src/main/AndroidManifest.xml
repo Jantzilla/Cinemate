@@ -36,7 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.creativesourceapps.android.cinemate.MainActivity" />
         </activity>
-        <activity android:name=".FavoritesActivity"></activity>
     </application>
 
 </manifest>
