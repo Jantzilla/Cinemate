@@ -1,5 +1,6 @@
 package com.creativesourceapps.android.cinemate;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.stetho.Stetho;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -128,9 +130,12 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Stetho.initializeWithDefaults(this);
         setContentView(R.layout.activity_detail);
         final SharedPreferences sharedpreferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedpreferences.edit();
+
+        final ContentValues values = new ContentValues();
 
         final Movie movie = getIntent().getParcelableExtra("parcel_data");
         final ImageView imageView = findViewById(R.id.imageView);
@@ -160,11 +165,26 @@ public class DetailActivity extends AppCompatActivity {
                     imageView2.setImageResource(android.R.drawable.btn_star_big_off);
                     editor.putString("Favorite"+movie.id, "false");
                     editor.commit();
+
+                    getContentResolver().delete(FavoritesContract.FAVORITE_URI, String.valueOf(movie.id), null);
+
                 }
                 else {
                     imageView2.setImageResource(android.R.drawable.btn_star_big_on);
                     editor.putString("Favorite"+movie.id, "true");
                     editor.commit();
+
+                    values.put(FavoritesContract.COLUMN_MOVIE_NAME, movie.title.trim());
+                    values.put(FavoritesContract.COLUMN_MOVIE_ID, movie.id);
+                    values.put(FavoritesContract.COLUMN_MOVIE_IMAGE, movie.poster.trim());
+
+                    //ContentResolver will access the Employee Content Provider
+                    Uri newUri = getContentResolver().insert(FavoritesContract.FAVORITE_URI, values);
+
+                    String newUserId = newUri.getLastPathSegment();
+
+                    Toast.makeText(getApplicationContext(),"Successfully saved. New User ID is " + newUserId, Toast.LENGTH_LONG).show();
+
                 }
             }
         });

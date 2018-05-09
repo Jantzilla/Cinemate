@@ -19,6 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.creativesourceapps.android.cinemate.FavoritesContentProvider"
+            android:authorities="com.creativesourceapps.android.cinemate"
+            android:exported="true"
+            android:label="FavoritesProvider"
+            android:grantUriPermissions="true">
+
+        </provider>
+
         <activity
             android:name=".DetailActivity"
             android:parentActivityName=".MainActivity">
